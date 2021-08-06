@@ -11,15 +11,16 @@ namespace Task3
 {
     public class WeatherProcessor
     {
-        string apiKey = "3fe29a3f69a1a5f16fc52525a7e579bb";
-        string cityCoordinates = "lat=59.57&lon=30.19";
-        string excludeParts = "&exclude=current,minutely,hourly,alerts";
         string URL
         {
             get
             {
-                return "http://api.openweathermap.org/data/2.5/onecall?" + cityCoordinates +
-                    "&cnt=" + 5 + "&units=metric&appid=" + apiKey + excludeParts;
+                return "http://api.openweathermap.org/data/2.5/onecall?lat=" 
+                    + Properties.Resources.cityLatitude + 
+                    "&lon=" + Properties.Resources.cityLongtitude 
+                    + "&cnt=" + Properties.Resources.predictionDayNumber
+                    + "&units=metric&appid=" + Properties.Resources.apiKey
+                    + Properties.Resources.excludedParts;
             }
         }
         public async Task<DayWeather[]> LoadWeather()
@@ -54,11 +55,13 @@ namespace Task3
         }
 
         private DayWeather GetMaxPressureForNext5Days(DayWeather[] days) => days.Take(6)
-                .OrderByDescending(day => day.Pressure)
-                .ToList()[0];
+            .OrderByDescending(day => day.Pressure)
+            .ToList()
+            .FirstOrDefault();
 
         private DayWeather GetMinTempDiffDay(DayWeather[] days) => days.Take(6)
             .OrderBy(day => day.TempDiff)
-            .ToList()[0];
+            .ToList()
+            .FirstOrDefault();
     }
 }

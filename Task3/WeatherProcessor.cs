@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Text;
 using System.Threading.Tasks;
-using System.Text.Json;
 using System.Linq;
 
 namespace Task3
@@ -18,9 +14,8 @@ namespace Task3
                 return "http://api.openweathermap.org/data/2.5/onecall?lat=" 
                     + Properties.Resources.cityLatitude + 
                     "&lon=" + Properties.Resources.cityLongtitude 
-                    + "&cnt=" + Properties.Resources.predictionDayNumber
                     + "&units=metric&appid=" + Properties.Resources.apiKey
-                    + Properties.Resources.excludedParts;
+                    + "&exclude=" + Properties.Resources.excludedParts;
             }
         }
         public async Task<DayWeather[]> LoadWeather()
@@ -38,20 +33,27 @@ namespace Task3
 
         public async Task GetHighestPressureAndLeastTempDiffDays()
         {
-            DayWeather[] weather = await Task.Run(() => LoadWeather());
-            DayWeather highestPressureDay = GetMaxPressureForNext5Days(weather);
-            Console.WriteLine("Day with highest pressure is {0} starting from today." +
-                "It's pressure is {1} hPa"
-                , Array.IndexOf(weather, highestPressureDay)
-                , highestPressureDay.Pressure);
-            DayWeather smoothestDay = GetMinTempDiffDay(weather);
-            Console.WriteLine("Least temprature difference is {0:0.00}°C " +
-                "on day {1} starting from today.\n" +
-                "It's morning temprature is {2}°C and night temprature is {3}°C."
-                , smoothestDay.TempDiff
-                , Array.IndexOf(weather, smoothestDay)
-                , smoothestDay.Temp.Morn
-                , smoothestDay.Temp.Night);
+            try
+            {
+                DayWeather[] weather = await Task.Run(() => LoadWeather());
+                DayWeather highestPressureDay = GetMaxPressureForNext5Days(weather);
+                Console.WriteLine("Day with highest pressure is {0} starting from today." +
+                    "It's pressure is {1} hPa"
+                    , Array.IndexOf(weather, highestPressureDay)
+                    , highestPressureDay.Pressure);
+                DayWeather smoothestDay = GetMinTempDiffDay(weather);
+                Console.WriteLine("Least temprature difference is {0:0.00}°C " +
+                    "on day {1} starting from today.\n" +
+                    "It's morning temprature is {2}°C and night temprature is {3}°C."
+                    , smoothestDay.TempDiff
+                    , Array.IndexOf(weather, smoothestDay)
+                    , smoothestDay.Temp.Morn
+                    , smoothestDay.Temp.Night);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private DayWeather GetMaxPressureForNext5Days(DayWeather[] days) => days.Take(6)

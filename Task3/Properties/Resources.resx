@@ -127,9 +127,6 @@
     <value>30.19</value>
   </data>
   <data name="excludedParts" xml:space="preserve">
-    <value>&amp;exclude=current,minutely,hourly,alerts</value>
-  </data>
-  <data name="predictionDayNumber" xml:space="preserve">
-    <value>5</value>
+    <value>current,minutely,hourly,alerts</value>
   </data>
 </root>

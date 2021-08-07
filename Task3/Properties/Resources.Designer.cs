@@ -88,20 +88,11 @@ namespace Task3.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на &amp;exclude=current,minutely,hourly,alerts.
+        ///   Ищет локализованную строку, похожую на current,minutely,hourly,alerts.
         /// </summary>
         internal static string excludedParts {
             get {
                 return ResourceManager.GetString("excludedParts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на 5.
-        /// </summary>
-        internal static string predictionDayNumber {
-            get {
-                return ResourceManager.GetString("predictionDayNumber", resourceCulture);
             }
         }
     }
